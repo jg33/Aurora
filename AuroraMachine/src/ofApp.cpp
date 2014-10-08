@@ -5,19 +5,28 @@
 void ofApp::setup(){
     ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE);
     
-    sceneManager.add(new ActOne());
+    actOne = (ActOne*) sceneManager.add(new ActOne());
     sceneManager.setup(true);
-    
-    
     sceneManager.gotoScene("ActOne",true);
-
     setSceneManager(&sceneManager);
+    
+    
+    oscIn.setup(6666);
     
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    cout<< sceneManager.getCurrentSceneName()<<endl;
+    while (oscIn.hasWaitingMessages()){
+        oscIn.getNextMessage(&msg);
+        cout<<msg.getAddress()<<endl;
+        if (msg.getAddress() == "/accxyz"){
+            accel = ofVec3f(msg.getArgAsFloat(0), msg.getArgAsFloat(1), msg.getArgAsFloat(2));
+        }
+        
+        cout<< "acc "<<accel.x<<endl;
+    }
+
 }
 
 //--------------------------------------------------------------

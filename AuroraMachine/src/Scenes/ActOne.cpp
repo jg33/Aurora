@@ -18,7 +18,6 @@ void ActOne::setup(){
 
 void ActOne::update(){
     
-    cout<< "updating"<<endl;
     
 }
 

@@ -8,6 +8,7 @@
 
 class ActOne;
 
+
 class ofApp : public ofxApp{
 
 	public:
@@ -33,6 +34,13 @@ private:
     ofxOscReceiver oscIn;
     
     ActOne * actOne;
+    
+    ///Inputs
+    ofxOscMessage msg;
+    ofVec3f accel;
+    ofVec2f XY;
+    float slide1, slide2;
 
 		
 };
+
