@@ -25,9 +25,18 @@ public:
     void updateEnter(){};
     void updateExit(){};
     
+    void inline setRecLoc (ofVec3f l){recLoc = l*500;};
+    void inline setAlt (float f){altitude = f;};
+    
 private:
     ofxApp * app;
     
+    ofVec3f recLoc;
+    
+    ofColor lowColor, highColor;
+    
+    ofColor primaryColor;
+    float altitude;
 };
 
 #endif /* defined(__AuroraMachine__ActOne__) */

@@ -14,17 +14,25 @@ void ActOne::setup(){
     
     app = ofxGetAppPtr();
     
+    lowColor = ofColor::royalBlue;
+    highColor = ofColor::mediumVioletRed;
+    
 }
 
 void ActOne::update(){
+    primaryColor = lowColor.getLerped(highColor, altitude);
     
     
 }
 
 void ActOne::draw(){
-    ofBackground(0);
-    ofSetColor(255);
-    ofRect(0,0,50,50);
-
+    //ofBackground(0);
+    
+    ofPushMatrix();
+    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+    ofSetColor(primaryColor);
+    ofRectMode(OF_RECTMODE_CENTER);
+    ofRect(recLoc,50,50);
+    ofPopMatrix();
     
 }

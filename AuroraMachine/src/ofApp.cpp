@@ -3,6 +3,8 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
+    ofSetBackgroundAuto(false);
     ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE);
     
     actOne = (ActOne*) sceneManager.add(new ActOne());
@@ -22,16 +24,25 @@ void ofApp::update(){
         cout<<msg.getAddress()<<endl;
         if (msg.getAddress() == "/accxyz"){
             accel = ofVec3f(msg.getArgAsFloat(0), msg.getArgAsFloat(1), msg.getArgAsFloat(2));
+        } else if ( msg.getAddress() == "/1/fader2"){
+            slide1 = msg.getArgAsFloat(0);
+            
         }
         
         cout<< "acc "<<accel.x<<endl;
     }
+    
+    actOne->setRecLoc(accel);
+    actOne->setAlt(slide1);
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+    ofSetColor(0, 0, 0,10);
+    ofRectMode(OF_RECTMODE_CORNER);
+    ofRect(0,0,ofGetWidth(), ofGetHeight());
+    
 }
 
 //--------------------------------------------------------------

@@ -27,7 +27,12 @@ class ofApp : public ofxApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-        void getOscValues();
+    ofVec3f inline getAccel(){return accel;};
+    ofVec2f inline getXY(){return XY;};
+    float inline getSlide1(){return slide1;};
+    float inline getSlide2(){return slide2;};
+    
+    
     
 private:
     ofxSceneManager sceneManager;
