@@ -1,0 +1,4 @@
+ofxOsc
+ofxAppUtils
+ofxColourTheory
+ofxFX
