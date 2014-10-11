@@ -9,11 +9,14 @@
 #ifndef __AuroraMachine__ActOne__
 #define __AuroraMachine__ActOne__
 
+#define NUM_CURTAIN_POINTS 50
+
 #include <iostream>
 
 
 #include "ofMain.h"
 #include "ofxAppUtils.h"
+#include "Particle.h"
 
 class ActOne : public ofxScene{
 public:
@@ -25,7 +28,7 @@ public:
     void updateEnter(){};
     void updateExit(){};
     
-    void inline setRecLoc (ofVec3f l){recLoc = l*500;};
+    void setLoc (ofVec3f l);
     void inline setAlt (float f){altitude = f;};
     
 private:
@@ -33,10 +36,15 @@ private:
     
     ofVec3f recLoc;
     
-    ofColor lowColor, highColor;
+    ofColor lowColor, midColor, highColor;
     
     ofColor primaryColor;
     float altitude;
+    
+    deque<ofVec3f> curtainPoints;
+    deque<ofColor> curtainColors;
+    ofPath curtain;
+    
 };
 
 #endif /* defined(__AuroraMachine__ActOne__) */

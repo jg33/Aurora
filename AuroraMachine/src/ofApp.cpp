@@ -24,16 +24,18 @@ void ofApp::update(){
         cout<<msg.getAddress()<<endl;
         if (msg.getAddress() == "/accxyz"){
             accel = ofVec3f(msg.getArgAsFloat(0), msg.getArgAsFloat(1), msg.getArgAsFloat(2));
+            actOne->setLoc(accel);
+
         } else if ( msg.getAddress() == "/1/fader2"){
             slide1 = msg.getArgAsFloat(0);
+            actOne->setAlt(slide1);
+
             
         }
-        
         cout<< "acc "<<accel.x<<endl;
     }
     
-    actOne->setRecLoc(accel);
-    actOne->setAlt(slide1);
+
 
 }
 
