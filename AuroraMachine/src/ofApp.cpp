@@ -3,6 +3,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    setDrawFramerate(true);
     
     ofSetBackgroundAuto(false);
     ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE);
@@ -15,6 +16,7 @@ void ofApp::setup(){
     
     oscIn.setup(6666);
     
+    bDebug = true;
 }
 
 //--------------------------------------------------------------
@@ -24,17 +26,30 @@ void ofApp::update(){
         cout<<msg.getAddress()<<endl;
         if (msg.getAddress() == "/accxyz"){
             accel = ofVec3f(msg.getArgAsFloat(0), msg.getArgAsFloat(1), msg.getArgAsFloat(2));
-            actOne->setLoc(accel);
 
         } else if ( msg.getAddress() == "/1/fader2"){
             slide1 = msg.getArgAsFloat(0);
             actOne->setAlt(slide1);
 
             
+        } else if (msg.getAddress() == "/cap"){
+            actOne->setFlow(msg.getArgAsFloat(0));
+        } else if (msg.getAddress() == "/wave"){
+            float waveNum = msg.getArgAsFloat(0);
+            
+            if (waveNum>0.6) {
+                waveNum = ofMap(waveNum,0.6,1,0,0.1);
+            } else if (waveNum<0.6){
+                waveNum = ofMap(waveNum, 0.6, -1, 0, -0.1);
+            }
+            
+            
+            actOne->setWave(ofVec2f(waveNum,0));
         }
-        cout<< "acc "<<accel.x<<endl;
+        //cout<< "acc "<<accel.x<<endl;
     }
-    
+    actOne->setLoc(accel);
+
 
 
 }
@@ -42,7 +57,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofSetColor(0, 0, 0,10);
-    ofRectMode(OF_RECTMODE_CORNER);
+    ofSetRectMode(OF_RECTMODE_CORNER);
     ofRect(0,0,ofGetWidth(), ofGetHeight());
     
 }

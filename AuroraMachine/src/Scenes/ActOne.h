@@ -9,7 +9,9 @@
 #ifndef __AuroraMachine__ActOne__
 #define __AuroraMachine__ActOne__
 
-#define NUM_CURTAIN_POINTS 50
+#define NUM_CURTAIN_POINTS 2000
+#define LINE_RESOLUTION_FOR_PARTICLES 25
+#define MOCK_INPUT false
 
 #include <iostream>
 
@@ -17,6 +19,8 @@
 #include "ofMain.h"
 #include "ofxAppUtils.h"
 #include "Particle.h"
+#include "Wave.h"
+#include "BigWave.h"
 
 class ActOne : public ofxScene{
 public:
@@ -31,19 +35,27 @@ public:
     void setLoc (ofVec3f l);
     void inline setAlt (float f){altitude = f;};
     
+    void setWave(ofVec2f v){theWave.setAcc(v);};
+    void setFlow(float f){flow=f;};
+    
 private:
     ofxApp * app;
     
-    ofVec3f recLoc;
+    ofVec3f recLoc, newLoc;
     
     ofColor lowColor, midColor, highColor;
     
     ofColor primaryColor;
     float altitude;
     
-    deque<ofVec3f> curtainPoints;
-    deque<ofColor> curtainColors;
-    ofPath curtain;
+    deque<ofVec3f> curtainPoints, mockPoints;
+    ofPolyline curtain;
+    
+    BigWave theWave;
+    
+    float flow;
+    
+    ofxParticleManager pBoss;
     
 };
 

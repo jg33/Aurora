@@ -14,10 +14,18 @@ void ActOne::setup(){
     
     app = ofxGetAppPtr();
     
-    lowColor = ofColor::royalBlue;
+    lowColor = ofColor::limeGreen;
     midColor = ofColor::green;
     highColor = ofColor::mediumVioletRed;
     
+    if (MOCK_INPUT){
+        for (int i=0;i< NUM_CURTAIN_POINTS;i++){
+            mockPoints.push_back(ofVec3f(500-ofRandom(1000),500-ofRandom(1000),500-ofRandom(1000)));
+        }
+        
+    }
+    
+    pBoss.setAutoRemove(true);
 }
 
 void ActOne::update(){
@@ -28,11 +36,39 @@ void ActOne::update(){
     }
     
     curtain.clear();
+    
+    if(MOCK_INPUT) curtainPoints = mockPoints;
     for(int i=0;i<curtainPoints.size();i++){
-        //curtain.addVertex(curtainPoints[i]);
-        cout<<curtainPoints[i]<<endl;;
+       curtain.addVertex(curtainPoints[i]);
+        ofVec3f noiseVert = ofVec3f(ofSignedNoise(i+ofGetElapsedTimef()), ofSignedNoise(i+50+ofGetElapsedTimef()),ofSignedNoise(i+76+ofGetElapsedTimef()));
+        //noiseVert;
+        //curtainPoints[i]+=noiseVert;//
+        //cout<<curtainPoints[i]<<endl;;
     }
     
+        for (float i= 0; i< LINE_RESOLUTION_FOR_PARTICLES;i++){
+            ofPoint thisPoint = curtain.getPointAtPercent((i/LINE_RESOLUTION_FOR_PARTICLES) + ofSignedNoise(ofGetElapsedTimef()+(i*5.66)));
+            thisPoint += ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
+            if(ofRandom(1) < flow){
+                pBoss.addParticle(new Dust(thisPoint));
+            }
+            //cout<<thisPoint<<endl;
+        }
+    
+    
+    
+    for(int i=0;i< curtainPoints.size();i++){
+        ofPoint thisPoint = curtainPoints[i];
+        thisPoint += ofVec2f(ofGetWidth()/2, ofGetHeight()/2);
+        thisPoint += ofVec2f(ofSignedNoise(ofGetElapsedTimef()+(i*5.66))*50, 0);
+       // pBoss.addParticle(new Dust(thisPoint));
+    }
+    
+    theWave.update();
+    
+    pBoss.update();
+    
+    //cout<<pBoss.getParticlesPtr()->size()<<endl;
 }
 
 void ActOne::draw(){
@@ -45,30 +81,34 @@ void ActOne::draw(){
     //ofRect(recLoc,50,50);
 
     ofSetLineWidth(10);
-    curtain.setFilled(false);
-    curtain.setStrokeColor(primaryColor);
-    curtain.setStrokeWidth(10);
-    curtain.setCurveResolution(100);
-    if(curtainPoints.size()>4){
-        for (int i=0;i<curtainPoints.size();i++){
-            curtain.setStrokeColor(curtainColors[i]);
-            curtain.curveTo(curtainPoints[i]);
-        }
-    }else{
-    }
+    //curtain.setFilled(false);
+    //curtain.setStrokeColor(primaryColor);
+    //curtain.setStrokeWidth(10);
+    //curtain.setCurveResolution(1000);
+//
+//    if(curtainPoints.size()>4){
+//        for (int i=0;i<curtainPoints.size();i++){
+//            curtain.curveTo(curtainPoints[i]);
+//        }
+//    }else{
+//    }
     curtain.draw();
     ofPopMatrix();
+    
+    theWave.draw();
+    
+    pBoss.draw();
+    
+    
     
 }
 
 void ActOne::setLoc(ofVec3f l){
-    ofVec3f newLoc = l*500;
-    //recLoc += (newLoc-recLoc)*0.5;
+    newLoc = l*500;
+    recLoc += (newLoc-recLoc)*0.1;
     
-    curtainPoints.push_front(newLoc);
-    curtainColors.push_front(primaryColor);
+    curtainPoints.push_front(recLoc);
     if(curtainPoints.size()>NUM_CURTAIN_POINTS){
-        curtainColors.pop_back();
         curtainPoints.pop_back();
     }
     
