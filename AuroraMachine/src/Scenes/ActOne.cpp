@@ -64,6 +64,7 @@ void ActOne::update(){
        // pBoss.addParticle(new Dust(thisPoint));
     }
     
+    theWave.setSize(waveWidth);
     theWave.update();
     
     pBoss.update();
@@ -104,7 +105,7 @@ void ActOne::draw(){
 }
 
 void ActOne::setLoc(ofVec3f l){
-    newLoc = l*500;
+    newLoc = l*800;
     recLoc += (newLoc-recLoc)*0.1;
     
     curtainPoints.push_front(recLoc);

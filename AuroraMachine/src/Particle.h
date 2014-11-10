@@ -35,6 +35,7 @@ public:
 protected:
     ofVec3f pos, vel, acc;
     int seed;
+    ofColor myColor;
     
 };
 
@@ -43,7 +44,12 @@ class Dust: public Particle{
     
     
 public:
-    Dust(ofVec3f l): Particle(){pos=l; setLifespan(ofRandom(6000));};
+    Dust(ofVec3f l): Particle(){
+        pos=l;
+        setLifespan(ofRandom(6000));
+        setup();
+        myColor = ofColor::limeGreen;
+    };
     
     void customUpdate(){
         ofVec3f lift = ofVec3f(
@@ -52,17 +58,20 @@ public:
             ofSignedNoise(ofGetElapsedTimef()*1.3829+seed+270)
         
         );
-        lift*=0.01;
+        lift*=0.02;
         
         vel+= lift;
         
         if(pos.y<0) bAlive=false;
+        
+        myColor.setBrightness(ofMap(sin((pos.x*0.01)+(ofGetElapsedTimef()*3 ) ),-1,1,50,255));
+        
     }
     
     void draw(){
         ofPushStyle();
-        ofSetColor(ofColor::limeGreen);
-        ofCircle(pos, 1);
+        ofSetColor(myColor);
+        ofDrawCircle(pos, 1);
         ofPopStyle();
     }
     

@@ -44,7 +44,10 @@ void ofApp::update(){
             }
             
             
-            actOne->setWave(ofVec2f(waveNum,0));
+            actOne->setWaveDir(ofVec2f(waveNum,0));
+        } else if(msg.getAddress() == "/waveWidth"){
+            float width = msg.getArgAsFloat(0);
+            actOne->setWaveWidth(width*300);
         }
         //cout<< "acc "<<accel.x<<endl;
     }
@@ -58,12 +61,15 @@ void ofApp::update(){
 void ofApp::draw(){
     ofSetColor(0, 0, 0,10);
     ofSetRectMode(OF_RECTMODE_CORNER);
-    ofRect(0,0,ofGetWidth(), ofGetHeight());
+    ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
     
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    if(key == ' '){
+        ofToggleFullscreen();
+    }
 
 }
 
