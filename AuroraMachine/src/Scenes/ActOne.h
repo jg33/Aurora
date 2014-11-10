@@ -21,6 +21,8 @@
 #include "Particle.h"
 #include "Wave.h"
 #include "BigWave.h"
+#include "Curtain.h"
+
 
 class ActOne : public ofxScene{
 public:
@@ -28,9 +30,13 @@ public:
     void setup();
     void update();
     void draw();
-    void exit(){};
     void updateEnter(){};
     void updateExit(){};
+    void exit(){
+        curtain1.stopThread();
+        curtain2.stopThread();
+        curtain3.stopThread();
+    };
     
     void setLoc (ofVec3f l);
     void inline setAlt (float f){altitude = f;};
@@ -48,6 +54,9 @@ private:
     
     ofColor primaryColor;
     float altitude;
+    
+    Curtain curtain1, curtain2, curtain3;
+    
     
     deque<ofVec3f> curtainPoints, mockPoints;
     ofPolyline curtain;

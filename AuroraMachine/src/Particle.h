@@ -45,10 +45,14 @@ class Dust: public Particle{
     
 public:
     Dust(ofVec3f l): Particle(){
+        Dust(l,ofColor::limeGreen);
+    };
+    
+    Dust(ofVec3f l, ofColor c): Particle(){
         pos=l;
         setLifespan(ofRandom(6000));
         setup();
-        myColor = ofColor::limeGreen;
+        myColor = c;
     };
     
     void customUpdate(){
@@ -62,10 +66,11 @@ public:
         
         vel+= lift;
         
-        if(pos.y<0) bAlive=false;
+        //if(pos.y<0) bAlive=false;
         
         myColor.setBrightness(ofMap(sin((pos.x*0.01)+(ofGetElapsedTimef()*3 ) ),-1,1,50,255));
         
+        position = pos;
     }
     
     void draw(){
