@@ -15,7 +15,7 @@ void ActOne::setup(){
     app = ofxGetAppPtr();
     
     lowColor = ofColor::limeGreen;
-    midColor = ofColor::blue;
+    midColor = ofColor::blueSteel;
     highColor = ofColor::mediumVioletRed;
     
     if (MOCK_INPUT){
@@ -25,21 +25,23 @@ void ActOne::setup(){
         
     }
     
-    curtain1.startThread();
     curtain1.color = lowColor;
+    curtain1.startThread();
     
-    curtain2.startThread();
     curtain2.color = midColor;
+    curtain2.startThread();
     
-    curtain3.startThread();
     curtain3.color = highColor;
+    curtain3.startThread();
     
 }
 
 void ActOne::update(){
+    /*
     curtain1.update();
     curtain2.update();
     curtain3.update();
+     */
 
     }
 
@@ -51,10 +53,17 @@ void ActOne::draw(){
 
     ofSetLineWidth(10);
   
+    //curtain1.lock();
+    //curtain2.lock();
+    //curtain3.lock();
+
     curtain1.draw();
     curtain2.draw();
     curtain3.draw();
 
+    //curtain1.unlock();
+    //curtain2.unlock();
+    //curtain3.unlock();
 
     ofPopMatrix();
     
@@ -63,8 +72,48 @@ void ActOne::draw(){
     
 }
 
-void ActOne::setLoc(ofVec3f l){
+void ActOne::setLoc(int i, ofVec3f l){
+    l*=10;
+    switch (i) {
+        case 1:
+            curtain1.lock();
+            curtain1.setLoc(l);
+            curtain1.resetIdleTimer();
+            curtain1.unlock();
+            break;
+        case 2:
+            curtain2.lock();
+            curtain2.setLoc(l);
+            curtain2.resetIdleTimer();
+            curtain2.unlock();
+            break;
+        case 3:
+            curtain2.lock();
+            curtain3.setLoc(l);
+            curtain3.resetIdleTimer();
+            curtain2.unlock();
+            break;
+            
+        default:
+            break;
+    }
+    
+}
 
-    curtain1.setLoc(l);
+void ActOne::setFlow(int i, float f){
+    switch (i) {
+        case 1:
+            curtain1.setFlow(f);
+            break;
+        case 2:
+            curtain2.setFlow(f);
+            break;
+        case 3:
+            curtain3.setFlow(f);
+            break;
+            
+        default:
+            break;
+    }
     
 }

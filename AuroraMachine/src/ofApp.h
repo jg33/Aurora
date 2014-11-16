@@ -27,8 +27,7 @@ class ofApp : public ofxApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-    ofVec3f inline getAccel(){return accel;};
-    ofVec2f inline getXY(){return XY;};
+    //ofVec3f inline getAccel(){return rock1;};
     float inline getSlide1(){return slide1;};
     float inline getSlide2(){return slide2;};
     
@@ -42,9 +41,11 @@ private:
     
     ///Inputs
     ofxOscMessage msg;
-    ofVec3f accel;
-    ofVec2f XY;
+    ofVec3f rock1,rock2,rock3;
+    float flow1, flow2, flow3;
     float slide1, slide2;
+    
+    bool oscOn= true;
 
 		
 };

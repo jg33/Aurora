@@ -9,7 +9,7 @@
 #ifndef __AuroraMachine__ActOne__
 #define __AuroraMachine__ActOne__
 
-#define NUM_CURTAIN_POINTS 500
+#define NUM_CURTAIN_POINTS 1000
 #define LINE_RESOLUTION_FOR_PARTICLES 25
 #define MOCK_INPUT false
 
@@ -33,17 +33,17 @@ public:
     void updateEnter(){};
     void updateExit(){};
     void exit(){
-        curtain1.stopThread();
-        curtain2.stopThread();
-        curtain3.stopThread();
+        curtain1.waitForThread();
+        curtain2.waitForThread();
+        curtain3.waitForThread();
     };
     
-    void setLoc (ofVec3f l);
+    void setLoc (int i, ofVec3f l);
     void inline setAlt (float f){altitude = f;};
     
-    void setWaveDir(ofVec2f v){theWave.setAcc(v);};
+    //void setWaveDir(ofVec2f v){theWave.setAcc(v);};
     void setWaveWidth(float width){waveWidth = width; };
-    void setFlow(float f){flow=f;};
+    void setFlow(int i, float f);
     
 private:
     ofxApp * app;
@@ -61,9 +61,9 @@ private:
     deque<ofVec3f> curtainPoints, mockPoints;
     ofPolyline curtain;
     
-    BigWave theWave;
+    //BigWave theWave;
     
-    float flow;
+    bool bIsIdle1, bIsIdle2, bIsIdle3;
     float waveWidth;
     
     ofxParticleManager pBoss;

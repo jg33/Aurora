@@ -23,36 +23,59 @@ void ofApp::setup(){
 void ofApp::update(){
     while (oscIn.hasWaitingMessages()){
         oscIn.getNextMessage(&msg);
-        cout<<msg.getAddress()<<endl;
-        if (msg.getAddress() == "/accxyz"){
-            accel = ofVec3f(msg.getArgAsFloat(0), msg.getArgAsFloat(1), msg.getArgAsFloat(2));
-
-        } else if ( msg.getAddress() == "/1/fader2"){
-            slide1 = msg.getArgAsFloat(0);
-            actOne->setAlt(slide1);
-
+        
+        vector<string> address = ofSplitString(msg.getAddress(),"/");
+        //cout<<address[1]<<endl;
+        
+        if (address[2]=="mag"  ){
             
-        } else if (msg.getAddress() == "/cap"){
-            actOne->setFlow(msg.getArgAsFloat(0));
-        } else if (msg.getAddress() == "/wave"){
-            float waveNum = msg.getArgAsFloat(0);
-            
-            if (waveNum>0.6) {
-                waveNum = ofMap(waveNum,0.6,1,0,0.1);
-            } else if (waveNum<0.6){
-                waveNum = ofMap(waveNum, 0.6, -1, 0, -0.1);
+            switch (ofToInt(address[1])) {
+                case 2:
+                    rock1 = ofVec3f(msg.getArgAsFloat(0), msg.getArgAsFloat(1), 0);
+                    actOne->setLoc(1,rock1);
+
+                    break;
+                case 3:
+                    rock2 = ofVec3f(msg.getArgAsFloat(0), msg.getArgAsFloat(1), 0);
+                    actOne->setLoc(2,rock2);
+
+                    break;
+                case 4:
+                    rock3 = ofVec3f(msg.getArgAsFloat(0), msg.getArgAsFloat(1), 0);
+                    actOne->setLoc(3,rock3);
+
+                    break;
+                    
+                default:
+                    break;
+            }
+
+        } else if (address[2] == "flow"){
+            switch (ofToInt(address[1])) {
+                case 1:
+                    flow1 = msg.getArgAsFloat(0);
+                    break;
+                case 2:
+                    flow2 = msg.getArgAsFloat(0);
+
+                    break;
+                case 3:
+                    flow3 = msg.getArgAsFloat(0);
+
+                    break;
+                    
+                default:
+                    break;
             }
             
-            
-            actOne->setWaveDir(ofVec2f(waveNum,0));
-        } else if(msg.getAddress() == "/waveWidth"){
-            float width = msg.getArgAsFloat(0);
-            actOne->setWaveWidth(width*300);
         }
-        //cout<< "acc "<<accel.x<<endl;
+        
     }
-    actOne->setLoc(accel);
-
+    if(oscOn){
+        actOne->setFlow(1, flow1);
+        actOne->setFlow(2, flow2);
+        actOne->setFlow(3, flow3);
+    }
 
 
 }
@@ -69,6 +92,9 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
     if(key == ' '){
         ofToggleFullscreen();
+    }
+    if(key =='o'){
+        oscOn = !oscOn;
     }
 
 }
